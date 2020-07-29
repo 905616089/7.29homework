@@ -200,12 +200,12 @@
 
 
         mouser(box,function(val){
-            box.style.transition="none";
-            box.style.transform="rotateX(" + (-val)+ "deg)"
-            console.log(val);
+
+          box.style.transform="rotateX("+90*i-val+ "deg)";
         },function(val){
-            box.style.transition="none";
-            box.style.transform="rotateX(" + val+ "deg)"
+            console.log(i);
+           
+            box.style.transform="rotateX(" +90*i+val+ "deg)"
             console.log(val);
         },function(val){
             box.style.transition="all 1s ease-in";
@@ -216,17 +216,43 @@
             for(var p=0;p<list.length;p++){
                     list[p].style.background="#888888";
                 }
-            list[i].style.background="black";
+            if(i<0){
+                i=-i;
+                t=i%4;
+                list[t].style.background="black";
+            }else{
+            var t=4-i%4;
+            list[t].style.background="black";
+            }
+            return;
         },function(val){
+            console.log("上滑")
             box.style.transition="all 1s ease-in";
+            console.log(val);
             if(val>50){
                 i--; 
             }
-            box.style.transform="rotateX(" + (-i)*90+ "deg)"
-            for(var p=0;p<list.length;p++){
+            if(i<0){
+                var t=-i;
+                t=t%4;
+    
+                for(var p=0;p<list.length;p++){
                     list[p].style.background="#888888";
                 }
-            list[i].style.background="black";
+                list[t].style.background="black";
+                box.style.transform="rotateX(" + (t)*90+ "deg)"
+            }else {
+                var t=i%4;
+                for(var p=0;p<list.length;p++){
+                    list[p].style.background="#888888";
+                }
+                list[t].style.background="black";
+                box.style.transform="rotateX(" + (t)*90+ "deg)"
+            }
+
+            return;
+            
+            
         })
 
         function mouser(obj,down,up,down1,up1){
@@ -244,6 +270,7 @@
                         down(Math.abs(endy-starty));
                     }else{
                         up(Math.abs(endy-starty));
+                      
                     }
                 }
                 document.onmouseup=function(){
