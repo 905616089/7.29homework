@@ -20,7 +20,7 @@
             width: 200px;
             height: 200px;
             transform-style: preserve-3d;
-            transition: all 2s ease-in;
+            transition: all 1s ease-in;
             ;
             cursor: pointer;
             z-index: 10000;
@@ -66,44 +66,48 @@
         .tops {
             cursor: pointer;
             position: absolute;
-            top:20%;
+            top: 20%;
             left: 0;
         }
 
         .bottom {
             cursor: pointer;
             position: absolute;
-            top:20%;
+            top: 20%;
             right: 0;
         }
-        .all{
+
+        .all {
             width: 500px;
             height: 500px;
-          
+
             position: relative;
         }
-        .list{
+
+        .list {
             margin: 10px auto;
             display: flex;
             flex-direction: row;
             padding: 0;
             width: 200px;
-            
+
         }
-        .list li{
-             list-style: none;
-             width: 20px;
-             height: 20px;
-             background: #888888;
-             border-radius: 50%;
-             line-height: 20px;
-             text-align: center;
-             margin-left: 20px;
-             color: #f6f6f6;
-             z-index: 20;
-             cursor: pointer;
+
+        .list li {
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: #888888;
+            border-radius: 50%;
+            line-height: 20px;
+            text-align: center;
+            margin-left: 20px;
+            color: #f6f6f6;
+            z-index: 20;
+            cursor: pointer;
         }
-        ul .first{
+
+        ul .first {
             background: black;
         }
     </style>
@@ -125,14 +129,14 @@
             </div>
         </div>
         <div class="bottom">下一页</div>
-        
-            <ul class="list">
-                <li class="first">1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-        
+
+        <ul class="list">
+            <li class="first">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+
     </div>
 
 
@@ -142,147 +146,157 @@
         var tops = document.querySelector(".tops");
         var bottom = document.querySelector(".bottom");
         var box = document.querySelector(".box");
-        var list=document.querySelectorAll(".list li");
-        var img2=document.querySelector(".img .img2")
+        var list = document.querySelectorAll(".list li");
+        var img2 = document.querySelector(".img .img2")
         console.log(tops);
         console.log(bottom);
         var i = 0;
 
         bottom.onclick = function () {
             i++;
-            box.style.transform = "rotateX(" + 90 * i + "deg)";
-            if(i>=0){
-                var t=i%4;
-           
-                for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-                list[t].style.background="black";
+            for (var p = 0; p < list.length; p++) {
+                list[p].style.background = "#888888";
             }
+            if (i >= 0) {
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[i % 4].style.background = "black";
+            } else {
+                var o = -i;
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[o % 4].style.background = "black";
+            }
+
 
         }
 
         tops.onclick = function () {
             i--;
-            box.style.transform = "rotateX(" + (90 * i) + "deg)";
-            if(i<0){
-                var t=-i;
-                t=4-t%4;
-            
-                for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-                list[t].style.background="black";
+            for (var p = 0; p < list.length; p++) {
+                list[p].style.background = "#888888";
+            }
 
-            }else {
-                var t=i%4;
-                for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-                list[t].style.background="black";
+            if (i < 0) {
+                var o = -i;
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[4 - (o % 4)].style.background = "black";
+            } else {
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[i % 4].style.background = "black";
             }
 
         }
 
-       
 
-        for(let x=0;x<list.length;x++){
-            list[x].onclick=function(){
-                box.style.transform="rotateX(" + 90 * x + "deg)";
-           
-                for(var y=0;y<list.length;y++){
-                    list[y].style.background="#888888";
+
+        for (let x = 0; x < list.length; x++) {
+            list[x].onclick = function () {
+                i = i + (x - Math.abs(i) % 4);
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+
+                for (var y = 0; y < list.length; y++) {
+                    list[y].style.background = "#888888";
                 }
-               this.style.background="black";
-               i=x;
+                this.style.background = "black";
             }
         }
 
 
-        mouser(box,function(val){
-
-          box.style.transform="rotateX("+90*i-val+ "deg)";
-        },function(val){
-            console.log(i);
-           
-            box.style.transform="rotateX(" +90*i+val+ "deg)"
+        mouser(box, function (val) {
             console.log(val);
-        },function(val){
-            box.style.transition="all 1s ease-in";
-            if(val>50){
-                i++; 
-            }
-            box.style.transform="rotateX(" + (-i)*90+ "deg)"
-            for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-            if(i<0){
-                i=-i;
-                t=i%4;
-                list[t].style.background="black";
-            }else{
-            var t=4-i%4;
-            list[t].style.background="black";
-            }
-            return;
-        },function(val){
-            console.log("上滑")
-            box.style.transition="all 1s ease-in";
+            box.style.transition="none";
+            box.style.transform = "rotateX(" +(( 90 * i)+(-val))+ "deg)";
+        }, function (val) {
+            box.style.transition="none";
+            box.style.transform = "rotateX(" +(( 90 * i)+val)+ "deg)";
             console.log(val);
-            if(val>50){
-                i--; 
-            }
-            if(i<0){
-                var t=-i;
-                t=t%4;
-    
-                for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-                list[t].style.background="black";
-                box.style.transform="rotateX(" + (t)*90+ "deg)"
-            }else {
-                var t=i%4;
-                for(var p=0;p<list.length;p++){
-                    list[p].style.background="#888888";
-                }
-                list[t].style.background="black";
-                box.style.transform="rotateX(" + (t)*90+ "deg)"
+        }, function (val) {
+          box.style.transition="all 1s ease"
+          if(val>50){
+              i--
+          }
+          box.style.transform="rotateX(" + 90 * i + "deg)"
+          for (var p = 0; p < list.length; p++) {
+                list[p].style.background = "#888888";
             }
 
-            return;
-            
-            
+            if (i < 0) {
+                var o = -i;
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[4 - (o % 4)].style.background = "black";
+            } else {
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[i % 4].style.background = "black";
+            }
+        }, function (val) {
+            box.style.transition="all 1s ease"
+            if(val>50){
+              i++;
+          }
+          for (var p = 0; p < list.length; p++) {
+                list[p].style.background = "#888888";
+            }
+            if (i >= 0) {
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[i % 4].style.background = "black";
+            } else {
+                var o = -i;
+                box.style.transform = "rotateX(" + 90 * i + "deg)";
+                list[o % 4].style.background = "black";
+            }
         })
 
-        function mouser(obj,down,up,down1,up1){
-            obj.onmousedown=function(res){
+        function mouser(obj, down, up, down1, up1) {
+            obj.onmousedown = function (res) {
                 console.log("点击");
-                var startx=res.clientX;
-                var starty=res.clientY;
+                var startx = res.clientX;
+                var starty = res.clientY;
 
 
                 var endx, endy;
-                document.onmousemove=function(res){
-                    endx=res.clientX;
-                    endy=res.clientY;
-                    if(endy>starty){
-                        down(Math.abs(endy-starty));
-                    }else{
-                        up(Math.abs(endy-starty));
-                      
+                document.onmousemove = function (res) {
+                    endx = res.clientX;
+                    endy = res.clientY;
+                    if (endy > starty) {
+                        down(Math.abs(endy - starty));
+                    } else {
+                        up(Math.abs(endy - starty));
+
                     }
                 }
-                document.onmouseup=function(){
-                    if(endy>starty){
-                        down1(Math.abs(endy-starty));
-                    }else{
-                        up1(Math.abs(endy-starty));
+                document.onmouseup = function () {
+                    if (endy > starty) {
+                        down1(Math.abs(endy - starty));
+                    } else {
+                        up1(Math.abs(endy - starty));
                     }
-                    document.onmousemove=null;
-                    document.onmouseup=null;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
                 }
             }
+        }
+
+        window.onblur=function(){
+            clearInterval(g)
+        }
+        window.onfocus=function(){
+            g=setInterval(run,3000);
+        }
+
+        function run(){
+            i++;
+            box.style.transform="rotateX(" + i*90+ "deg)";
+            for(var p=0;p<list.length;p++){
+                    list[p].style.background="#888888";
+                }
+                list[i%4].style.background="black"
+        }
+        var g=setInterval(run ,3000);
+        box.onmouseover=function(){
+            clearInterval(g);
+        }
+
+        box.onmouseout=function(){
+            g=setInterval(run,3000);
         }
     </script>
 </body>
